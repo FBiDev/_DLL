@@ -1,0 +1,75 @@
+
+nuget.org/packages/{name}
+
+IndexRange
+1.0.3
+
+System.Buffers
+4.0.3.0 (4.5.1)
+
+System.Memory
+4.0.1.2 (4.5.5)
+-	System.Runtime.CompilerServices.Unsafe
+
+System.Numerics.Vectors
+4.1.4.0 (4.5.0)
+
+System.Runtime.CompilerServices.Unsafe
+4.0.4.1 (4.5.3)
+6.0.0
+
+System.Collections.Immutable
+7.0.0
+-	System.Memory (>= 4.5.5)
+-	System.Runtime.CompilerServices.Unsafe (>= 6.0.0)
+
+System.Data.SQLite [database]
+1.0.118.0 
+	https://system.data.sqlite.org/index.html/doc/trunk/www/downloads.wiki 
+	sqlite-netFx45-binary-x64-2012-1.0.118.0
+-	SQLite.Interop.dll
+
+Newtonsoft.Json [JSON framework]
+13.0.3
+
+Brotli.NET [JSON framework]
+2.1.1
+-	Brotli.Core
+-	brolib_x64
+
+Newtonsoft.Json.Bson [JSON framework]
+1.0.0.0 (1.0.3-beta1)
+-	Newtonsoft.Json (>= 13.0.1)
+
+protobuf-net
+3.0.0.0 (3.2.30)
+-	protobuf-net.Core (>= 3.2.30)
+	-	System.Collections.Immutable (>= 7.0.0)
+	-	System.Memory (>= 4.5.5)
+
+PhotoSauce.MagicScaler [image]
+0.14.0
+-	IndexRange (>= 1.0.3)
+-	System.Buffers (>= 4.5.1)
+-	System.Memory (>= 4.5.5)
+-	System.Numerics.Vectors (>= 4.5.0)
+-	System.Runtime.CompilerServices.Unsafe (>= 4.5.3)
+
+Microsoft.Web.WebView2 [browser]
+1.0.1054.31 (Win7 Support)
+-	Microsoft.Web.WebView2.WinForms
+- Microsoft.Web.WebView2.Core
+-	WebView2Loader
+
+Jint [Javascript interpreter]
+3.0.0.0
+-	Esprima [Javascript parser]
+	3.0.4.0
+
+BouncyCastle.Cryptography [cryptography]
+2.0.0.0 (2.2.1)
+
+Common.Logging [logging]
+3.4.1.0
+- Common.Logging.Core
+	3.4.1.0
