@@ -8,8 +8,6 @@ namespace _DLL
         public MainForm()
         {
             InitializeComponent();
-            var a = 0;
-            var b = 3 / a;
         }
 
         private void btnWebView2_Click(object sender, EventArgs e)
