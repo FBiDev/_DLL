@@ -27,7 +27,7 @@ namespace _DLL
 
         void Form1_Shown(object sender, EventArgs e)
         {
-            wbvMain.Source = new System.Uri(LOGIN_URL);
+            wbvMain.Source = new Uri(LOGIN_URL);
         }
 
         void webView21_CoreWebView2InitializationCompleted(object sender, CoreWebView2InitializationCompletedEventArgs e)
@@ -45,10 +45,10 @@ namespace _DLL
 
         public async static void SetCookies()
         {
-            ChromiumCookieReader cookieReader = new ChromiumCookieReader();
+            var cookieReader = new ChromiumCookieReader();
             var cookies = cookieReader.GetCookies("retroachievements.org", @"AppTest.vshost.exe.WebView2\EBWebView");
 
-            WebClientExtend w = new WebClientExtend();
+            var w = new WebClientExtend();
             foreach (var c in cookies)
             {
                 w.CookieContainer.Add(c);

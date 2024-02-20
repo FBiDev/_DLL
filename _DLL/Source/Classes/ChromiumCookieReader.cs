@@ -16,7 +16,7 @@ namespace _DLL
 {
     public class ChromiumCookieReader : IDisposable
     {
-        private static ILog s_logger = LogManager.GetLogger(typeof(ChromiumCookieReader));
+        static readonly ILog s_logger = LogManager.GetLogger(typeof(ChromiumCookieReader));
 
         /// <summary>
         /// Reading and decrypting Chrome cookies.
@@ -29,7 +29,7 @@ namespace _DLL
         {
 
             string ChromeCookiePath = profileFolderPath != null
-                                            ? System.IO.Path.Combine(profileFolderPath, @"Default\Network\Cookies")
+                                            ? Path.Combine(profileFolderPath, @"Default\Network\Cookies")
                                             : Environment.ExpandEnvironmentVariables(@"%localappdata%\Google\Chrome\User Data\Default\Network\Cookies");
 
 
@@ -39,11 +39,11 @@ namespace _DLL
                 return new List<Cookie>();
             }
 
-            List<Cookie> data = new List<Cookie>();
+            var data = new List<Cookie>();
             try
             {
                 s_logger.Debug("Reading Cookie database @ " + ChromeCookiePath);
-                var connBuilder = new SQLiteConnectionStringBuilder()
+                var connBuilder = new SQLiteConnectionStringBuilder
                 {
                     DataSource = ChromeCookiePath,
                     ReadOnly = true
@@ -59,7 +59,7 @@ namespace _DLL
 
                     using (var cmd = conn.CreateCommand())
                     {
-                        long expireTime = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+                        var expireTime = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
                         cmd.CommandText =
                             @"select   creation_utc,
                                     host_key,
@@ -84,21 +84,21 @@ namespace _DLL
                             [is_persistent] =1 AND
                             " + hostClause;
 
-                        byte[] key = AesGcm256.GetKey(profileFolderPath);
+                        var key = AesGcm256.GetKey(profileFolderPath);
                         using (var reader = cmd.ExecuteReader())
                         {
                             while (reader.Read())
                             {
-                                string name = reader["name"].ToString();
-                                string path = reader["path"].ToString();
-                                string domain = reader["host_key"].ToString();
-                                long expiration = long.Parse(reader["expires_utc"].ToString());
-                                byte[] encrypted_value = (byte[])reader["encrypted_value"];
-                                string value = DecryptCookieValue(key, encrypted_value);
-                                Cookie cookie = new Cookie(name, value, path, domain)
-                                    {
-                                        Expires = DateTimeOffset.FromUnixTimeSeconds(expiration.ChromiumDbTimeToUnixTime()).DateTime
-                                    };
+                                var name = reader["name"].ToString();
+                                var path = reader["path"].ToString();
+                                var domain = reader["host_key"].ToString();
+                                var expiration = long.Parse(reader["expires_utc"].ToString());
+                                var encrypted_value = (byte[])reader["encrypted_value"];
+                                var value = DecryptCookieValue(key, encrypted_value);
+                                var cookie = new Cookie(name, value, path, domain)
+                                {
+                                    Expires = DateTimeOffset.FromUnixTimeSeconds(expiration.ChromiumDbTimeToUnixTime()).DateTime
+                                };
                                 data.Add(cookie);
                             }
                         }
@@ -120,12 +120,12 @@ namespace _DLL
         /// </summary>
         /// <param name="hostname"></param>
         /// <returns></returns>
-        private List<string> GetSubDomainList(string host, bool addHostToList = false)
+        List<string> GetSubDomainList(string host, bool addHostToList = false)
         {
             if (string.IsNullOrEmpty(host))
                 return new List<string>();
 
-            List<string> subDomainList = new List<string>();
+            var subDomainList = new List<string>();
             var splits = host.Split(new char[] { '.' }, StringSplitOptions.RemoveEmptyEntries);
             if (splits.Length <= 2)
                 return new List<string>();
@@ -154,13 +154,13 @@ namespace _DLL
         /// <param name="key"></param>
         /// <param name="encryptedCookieValue"></param>
         /// <returns></returns>
-        private string DecryptCookieValue(byte[] key, byte[] encryptedCookieValue)
+        string DecryptCookieValue(byte[] key, byte[] encryptedCookieValue)
         {
             try
             {
                 byte[] nonce, ciphertextTag;
                 AesGcm256.prepare(encryptedCookieValue, out nonce, out ciphertextTag);
-                string value = AesGcm256.decrypt(ciphertextTag, key, nonce);
+                var value = AesGcm256.decrypt(ciphertextTag, key, nonce);
                 return value;
 
             }
@@ -209,34 +209,34 @@ namespace _DLL
             {
                 string sR = string.Empty;
                 string path = profileFolderPath != null
-                                   ? System.IO.Path.Combine(profileFolderPath, @"Local State")
+                                   ? Path.Combine(profileFolderPath, @"Local State")
                                    : Environment.ExpandEnvironmentVariables(@"%localappdata%\Google\Chrome\User Data\Local State");
 
 
-                string v = File.ReadAllText(path);
+                var v = File.ReadAllText(path);
 
                 dynamic json = JsonConvert.DeserializeObject(v);
                 string key = json.os_crypt.encrypted_key;
 
-                byte[] src = Convert.FromBase64String(key);
-                byte[] encryptedKey = src.Skip(5).ToArray();
+                var src = Convert.FromBase64String(key);
+                var encryptedKey = src.Skip(5).ToArray();
 
-                byte[] decryptedKey = ProtectedData.Unprotect(encryptedKey, null, DataProtectionScope.CurrentUser);
+                var decryptedKey = ProtectedData.Unprotect(encryptedKey, null, DataProtectionScope.CurrentUser);
 
                 return decryptedKey;
             }
 
             public static string decrypt(byte[] encryptedBytes, byte[] key, byte[] iv)
             {
-                string sR = String.Empty;
+                string sR = string.Empty;
                 try
                 {
-                    GcmBlockCipher cipher = new GcmBlockCipher(new AesEngine());
-                    AeadParameters parameters = new AeadParameters(new KeyParameter(key), 128, iv, null);
+                    var cipher = new GcmBlockCipher(new AesEngine());
+                    var parameters = new AeadParameters(new KeyParameter(key), 128, iv, null);
 
                     cipher.Init(false, parameters);
                     byte[] plainBytes = new byte[cipher.GetOutputSize(encryptedBytes.Length)];
-                    Int32 retLen = cipher.ProcessBytes(encryptedBytes, 0, encryptedBytes.Length, plainBytes, 0);
+                    var retLen = cipher.ProcessBytes(encryptedBytes, 0, encryptedBytes.Length, plainBytes, 0);
                     cipher.DoFinal(plainBytes, retLen);
 
                     sR = Encoding.UTF8.GetString(plainBytes).TrimEnd("\r\n\0".ToCharArray());
@@ -254,8 +254,8 @@ namespace _DLL
                 nonce = new byte[12];
                 ciphertextTag = new byte[encryptedData.Length - 3 - nonce.Length];
 
-                System.Array.Copy(encryptedData, 3, nonce, 0, nonce.Length);
-                System.Array.Copy(encryptedData, 3 + nonce.Length, ciphertextTag, 0, ciphertextTag.Length);
+                Array.Copy(encryptedData, 3, nonce, 0, nonce.Length);
+                Array.Copy(encryptedData, 3 + nonce.Length, ciphertextTag, 0, ciphertextTag.Length);
             }
         }
     }
@@ -263,7 +263,7 @@ namespace _DLL
     public static class ChromiumDbDateTimeExtensions
     {
         //1601-01-01T00:00:00Z
-        private static DateTimeOffset ProlepticGregorianEpoch = new DateTimeOffset(1601, 1, 1, 0, 0, 0, TimeSpan.Zero);
+        static readonly DateTimeOffset ProlepticGregorianEpoch = new DateTimeOffset(1601, 1, 1, 0, 0, 0, TimeSpan.Zero);
 
         /// <summary>
         /// Convert a Chromium DB Proleptic Gregorian Time Stamp to Unix Time        
