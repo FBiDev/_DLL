@@ -129,8 +129,8 @@
     <Content Include="Plugins\Cryptography\brolib_x64.dll" />
     <Content Include="Plugins\Cryptography\Brotli.Core.dll" />
     <Content Include="Plugins\DLL_INFO.txt" />
-    <Content Include="Plugins\GNX.dll" />
-    <Content Include="Plugins\GNX.pdb" />
+    <Content Include="Plugins\Core\GNX.dll" />
+    <Content Include="Plugins\Core\GNX.pdb" />
     <Content Include="Plugins\Http\Microsoft.Web.WebView2.Core.dll" />
     <Content Include="Plugins\Http\Microsoft.Web.WebView2.WinForms.dll" />
     <Content Include="Plugins\Http\MicrosoftEdgeWebview2Setup_2.exe" />
@@ -149,10 +149,10 @@
     <Content Include="Plugins\Json\protobuf-net.Core.xml" />
     <Content Include="Plugins\Json\protobuf-net.dll" />
     <Content Include="Plugins\Json\protobuf-net.xml" />
-    <Content Include="Plugins\Log\Common.Logging.Core.dll" />
-    <Content Include="Plugins\Log\Common.Logging.dll" />
-    <Content Include="Plugins\SQLite.Interop.dll" />
-    <Content Include="Plugins\System.Data.SQLite.dll" />
+    <Content Include="Plugins\Logging\Common.Logging.Core.dll" />
+    <Content Include="Plugins\Logging\Common.Logging.dll" />
+    <Content Include="Plugins\Database\SQLite.Interop.dll" />
+    <Content Include="Plugins\Database\System.Data.SQLite.dll" />
     <Content Include="Plugins\System\IndexRange.dll" />
     <Content Include="Plugins\System\System.Buffers.dll" />
     <Content Include="Plugins\System\System.Buffers.xml" />

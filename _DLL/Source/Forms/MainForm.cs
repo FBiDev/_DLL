@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Windows.Forms;
 
 namespace _DLL
@@ -8,6 +9,7 @@ namespace _DLL
         public MainForm()
         {
             InitializeComponent();
+            Directory.Delete("_DLL.exe.WebView2", true);
         }
 
         private void btnWebView2_Click(object sender, EventArgs e)
