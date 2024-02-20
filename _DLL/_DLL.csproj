@@ -161,7 +161,7 @@
     <Content Include="Plugins\System\System.Memory.dll" />
     <Content Include="Plugins\System\System.Numerics.Vectors.dll" />
     <Content Include="Plugins\System\System.Numerics.Vectors.xml" />
-    <Content Include="Plugins\System\System.Runtime.CompilerServices.Unsafe.4.0.4.1.dll" />
+    <Content Include="Plugins\System\System.Runtime.CompilerServices.Unsafe.4.0.4.1\System.Runtime.CompilerServices.Unsafe.dll" />
     <Content Include="Plugins\System\System.Runtime.CompilerServices.Unsafe.dll" />
     <Content Include="Plugins\System\System.Runtime.CompilerServices.Unsafe.xml" />
   </ItemGroup>
